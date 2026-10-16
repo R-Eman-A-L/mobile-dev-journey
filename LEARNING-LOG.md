@@ -18,3 +18,9 @@ Built: tap-to-toggle check mark (Flutter setState + Set; Compose remember + muta
 Broke: Icons unresolved in Compose; removing setState / remember stopped the toggle
 Fixed: added material-icons-core dependency. Flutter mutates the Set and calls setState;
        Compose assigns a new Set (done += name), and the assignment triggers the redraw
+
+## Day 3 — Oct 15 (catch-up)
+Built: add-habit form with validation (Flutter Form + validator; Compose OutlinedTextField + error state)
+Broke: spaces and "Gym " slipped through — I validated the raw text but added the trimmed text
+Fixed: trim once first, then validate and add that same value
+Noticed: rotation keeps habits in Flutter, resets everything in Compose
