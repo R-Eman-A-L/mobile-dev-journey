@@ -31,3 +31,17 @@ Built: long-press delete + "No habits yet" empty state (Flutter onLongPress; Com
 Broke: deleting only from the list left a ghost check — re-adding "Gym" came back checked
 Fixed: delete removes from habits AND done (two sources of truth → single source in week 2)
        Compose: if without else drew both views; switched to if/else
+
+
+## Day 5 — Oct 17 (catch-up)
+Built: rememberSaveable for habits + done in Compose; survival table for rotation / background kill / swipe away
+Broke: PowerShell rejected %LOCALAPPDATA% (CMD syntax); Flutter debug build froze on splash after process kill
+Fixed: used $env:LOCALAPPDATA + Set-Alias for adb; verified the Compose kill with pidof
+Biggest difference this week: Flutter mutates and calls setState; Compose assigns new values that it watches
+Survives nothing on either platform: swipe-away → needs real storage (week 4)
+
+| | Rotation | Background kill | Swipe away |
+|---|---|---|---|
+| Flutter (State field) | ✅ | ❌ (expected) | ❌ |
+| Compose remember | ❌ | ❌ | ❌ |
+| Compose rememberSaveable | ✅ | ✅ (tested) | ❌ |
