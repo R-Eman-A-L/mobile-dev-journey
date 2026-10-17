@@ -24,3 +24,10 @@ Built: add-habit form with validation (Flutter Form + validator; Compose Outline
 Broke: spaces and "Gym " slipped through — I validated the raw text but added the trimmed text
 Fixed: trim once first, then validate and add that same value
 Noticed: rotation keeps habits in Flutter, resets everything in Compose
+
+
+## Day 4 — Oct 17 (catch-up)
+Built: long-press delete + "No habits yet" empty state (Flutter onLongPress; Compose combinedClickable)
+Broke: deleting only from the list left a ghost check — re-adding "Gym" came back checked
+Fixed: delete removes from habits AND done (two sources of truth → single source in week 2)
+       Compose: if without else drew both views; switched to if/else
