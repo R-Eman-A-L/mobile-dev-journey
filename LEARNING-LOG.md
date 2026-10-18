@@ -45,3 +45,11 @@ Survives nothing on either platform: swipe-away → needs real storage (week 4)
 | Flutter (State field) | ✅ | ❌ (expected) | ❌ |
 | Compose remember | ❌ | ❌ | ❌ |
 | Compose rememberSaveable | ✅ | ✅ (tested) | ❌ |
+
+
+## Day 6 — Oct 18 (week 2 starts early)
+Built: Habit model (id, name, doneToday) on both platforms; removed the done Set
+Broke: rememberSaveable seemed to work with List<Habit> on rotation (in-memory) but can't survive a background kill, and nextId reset separately → duplicate ids
+Fixed: back to remember for habits + nextId; ViewModel tomorrow keeps related state together
+Pattern: immutable update = find (by id) → copy (copyWith/copy) → swap
+Proof: check Gym → delete → re-add → unchecked, with zero cleanup code
