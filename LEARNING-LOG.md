@@ -53,3 +53,11 @@ Broke: rememberSaveable seemed to work with List<Habit> on rotation (in-memory) 
 Fixed: back to remember for habits + nextId; ViewModel tomorrow keeps related state together
 Pattern: immutable update = find (by id) → copy (copyWith/copy) → swap
 Proof: check Gym → delete → re-add → unchecked, with zero cleanup code
+
+## Day 7 — Oct 19–20
+Built: HabitListViewModel on both platforms; screens only display + forward taps (ids, not objects)
+Broke: Flutter VM read from the public getter (copies the list); Compose keyed rows by index
+Fixed: work on _habits inside the VM; key = { it.id }; guard clause in addHabit; trim inside validate
+Method: Goal → Have → Steps (comments) → Lines
+Rotation (Android, ViewModel): ✅
+Background kill (Android, ViewModel):
