@@ -14,40 +14,42 @@ Fixed: removed the wrong import, kept androidx.compose.material3.ListItem
 To do: research how LazyColumn and ListItem are built in Compose
 
 ## Day 2 — Oct 15
+
 Built: tap-to-toggle check mark (Flutter setState + Set; Compose remember + mutableStateOf)
 Broke: Icons unresolved in Compose; removing setState / remember stopped the toggle
 Fixed: added material-icons-core dependency. Flutter mutates the Set and calls setState;
-       Compose assigns a new Set (done += name), and the assignment triggers the redraw
+Compose assigns a new Set (done += name), and the assignment triggers the redraw
 
 ## Day 3 — Oct 15 (catch-up)
+
 Built: add-habit form with validation (Flutter Form + validator; Compose OutlinedTextField + error state)
 Broke: spaces and "Gym " slipped through — I validated the raw text but added the trimmed text
 Fixed: trim once first, then validate and add that same value
 Noticed: rotation keeps habits in Flutter, resets everything in Compose
 
-
 ## Day 4 — Oct 17 (catch-up)
+
 Built: long-press delete + "No habits yet" empty state (Flutter onLongPress; Compose combinedClickable)
 Broke: deleting only from the list left a ghost check — re-adding "Gym" came back checked
 Fixed: delete removes from habits AND done (two sources of truth → single source in week 2)
-       Compose: if without else drew both views; switched to if/else
-
+Compose: if without else drew both views; switched to if/else
 
 ## Day 5 — Oct 17 (catch-up)
+
 Built: rememberSaveable for habits + done in Compose; survival table for rotation / background kill / swipe away
 Broke: PowerShell rejected %LOCALAPPDATA% (CMD syntax); Flutter debug build froze on splash after process kill
 Fixed: used $env:LOCALAPPDATA + Set-Alias for adb; verified the Compose kill with pidof
 Biggest difference this week: Flutter mutates and calls setState; Compose assigns new values that it watches
 Survives nothing on either platform: swipe-away → needs real storage (week 4)
 
-| | Rotation | Background kill | Swipe away |
-|---|---|---|---|
-| Flutter (State field) | ✅ | ❌ (expected) | ❌ |
-| Compose remember | ❌ | ❌ | ❌ |
-| Compose rememberSaveable | ✅ | ✅ (tested) | ❌ |
-
+|                          | Rotation | Background kill | Swipe away |
+| ------------------------ | -------- | --------------- | ---------- |
+| Flutter (State field)    | ✅       | ❌ (expected)   | ❌         |
+| Compose remember         | ❌       | ❌              | ❌         |
+| Compose rememberSaveable | ✅       | ✅ (tested)     | ❌         |
 
 ## Day 6 — Oct 18 (week 2 starts early)
+
 Built: Habit model (id, name, doneToday) on both platforms; removed the done Set
 Broke: rememberSaveable seemed to work with List<Habit> on rotation (in-memory) but can't survive a background kill, and nextId reset separately → duplicate ids
 Fixed: back to remember for habits + nextId; ViewModel tomorrow keeps related state together
@@ -55,15 +57,16 @@ Pattern: immutable update = find (by id) → copy (copyWith/copy) → swap
 Proof: check Gym → delete → re-add → unchecked, with zero cleanup code
 
 ## Day 7 — Oct 19–20
+
 Built: HabitListViewModel on both platforms; screens only display + forward taps (ids, not objects)
 Broke: Flutter VM read from the public getter (copies the list); Compose keyed rows by index
-Fixed: work on _habits inside the VM; key = { it.id }; guard clause in addHabit; trim inside validate
+Fixed: work on \_habits inside the VM; key = { it.id }; guard clause in addHabit; trim inside validate
 Method: Goal → Have → Steps (comments) → Lines
 Rotation (Android, ViewModel): ✅
 Background kill (Android, ViewModel):
 
-
 ## Day 8 — Oct 20
+
 Built: HabitRepository (abstract class / interface) + InMemoryHabitRepository on both platforms; ViewModel receives the repository through its constructor
 Broke: My Android screen did not update after add, toggle or delete
 Fixed: map / filter / + return a NEW list and leave the old one unchanged; I had to store the result back (habits = habits.map { ... })
@@ -73,3 +76,11 @@ Learned: A repository is the single place that stores and changes the data; the 
 Interface test: verbs that reach outside (save, load, fetch, send, play) → interface; verbs that stay inside (calculate, format, represent) → plain class
 Interface rule: Reach out, swap out, or fake out → interface. None → keep it plain.
 
+## Day 9 — Oct 21
+
+Built: HabitListUiState (one box per screen); ViewModel events onToggle / onDelete / onAdd / onTextChanged; "X of Y done today" line
+Broke: the screen wrote into the box (state.error = null) and did the brain's job in the Add button; Flutter rang the bell twice
+Fixed: the screen only reads the box and reports events; UiState fields are val/final; refresh() owns building the box and the bell
+Predict: 1) tap → count goes up 2) typing clears the error 3) Android rotation keeps the error
+Result: all matched ✅
+Learned: The UiState is a snapshot of everything on the screen that can change, built by the ViewModel. The screen pushes events up, and the ViewModel pushes a new state down after the changes are made.
