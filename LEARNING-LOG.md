@@ -70,3 +70,4 @@ Fixed: map / filter / + return a NEW list and leave the old one unchanged; I had
 Predict (Fake repository): only Test A and Test B on screen; only the one line in main changes
 Result: matched ✅
 Learned: A repository is the single place that stores and changes the data; the ViewModel asks it for data and asks it to make changes, but never edits the data itself. We use an abstract class (Dart) or interface (Kotlin) so the ViewModel only knows the job description, not the worker, which means swapping to another repository (fake, database) changes one line instead of the whole codebase.
+Interface test: verbs that reach outside (save, load, fetch, send, play) → interface; verbs that stay inside (calculate, format, represent) → plain class
