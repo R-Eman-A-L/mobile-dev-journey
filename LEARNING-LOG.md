@@ -84,3 +84,55 @@ Fixed: the screen only reads the box and reports events; UiState fields are val/
 Predict: 1) tap → count goes up 2) typing clears the error 3) Android rotation keeps the error
 Result: all matched ✅
 Learned: The UiState is a snapshot of everything on the screen that can change, built by the ViewModel. The screen pushes events up, and the ViewModel pushes a new state down after the changes are made.
+
+## Day 9 — Oct 21
+
+|                          | Rotation | Background kill | Swipe away |
+| ------------------------ | -------- | --------------- | ---------- |
+| Android: habits + checks | ✅       | ✅              | ❌         |
+| Android: half-typed text | ✅       | ❌              | ❌         |
+| Flutter: habits + checks | ✅       | ✅              | ❌         |
+
+|                          | Rotation | Background kill                                                                    | Swipe away |
+| ------------------------ | -------- | ---------------------------------------------------------------------------------- | ---------- |
+| Android: habits + checks | ✅       | ❌ viewMOdel dies with the app                                                     | ❌         |
+| Android: half-typed text | ✅       | ✅ rememberSaveable writes to Android’s saved bundle, which lives outside the app. | ❌         |
+| Flutter: habits + checks | ✅       | N/A                                                                                | ❌         |
+
+| Job                                     | Flutter               | Android             |
+| --------------------------------------- | --------------------- | ------------------- |
+| The brain's base class                  | the viewModel class   | the viewModel class |
+| Ring the bell (tell the screen)         | notifyListeners       | ?                   |
+| The screen listens with                 | ?                     | ?                   |
+| Private writable, public read-only      | ?                     | ?                   |
+| The box (UiState) is declared as        | class                 | data class          |
+| The job description (interface) keyword | abstract              | interface           |
+| "Signs" the job description             | override              | override            |
+| Copy an object with one change          | object.copyWith()     | object.copy()       |
+| Code that runs once at creation         | init()                | init()              |
+| Count the habits that are done          | habits.where().length | habits.count()      |
+
+**answers:**
+| Job | Flutter | Android |
+|---|---|---|
+| The brain's base class | `ChangeNotifier` | `ViewModel` |
+| Ring the bell (tell the screen) | `notifyListeners()` | give the `MutableStateFlow` a new value (`_state.value = ...`) |
+| The screen listens with | `ListenableBuilder` | `collectAsStateWithLifecycle()` |
+| Private writable, public read-only | `_state` + a getter | `_state` + `asStateFlow()` |
+| The box (UiState) is declared as | `class` with `final` fields | `data class` with `val` fields |
+| The job description (interface) keyword | `abstract class` | `interface` |
+| "Signs" the job description | `implements` (+ `@override` on each function) | `:` (+ `override` on each function) |
+| Copy an object with one change | `copyWith()` (written by hand) | `copy()` (free with `data class`) |
+| Code that runs once at creation | the constructor body `{ }` | `init { }` |
+| Count the habits that are done | `habits.where((h) => h.doneToday).length` | `habits.count { it.doneToday }` |
+
+**Biggest difference:** On rotation, Flutter keeps the screen's state automatically, while Android rebuilds the screen, so Android needs a ViewModel (or `rememberSaveable`) to keep data. On a background kill, Android offers a saved bundle (`rememberSaveable`), and Flutter has nothing by default. Swipe-away loses everything on both.
+
+
+## Challenge 1 — Tip Splitter (Oct 22–27)
+Built: TipSplit (Android) from a ticket: UiState with inputs + results, 4 events, refresh with guard clauses, stepper, segmented buttons, number keyboard
+Broke: + didn't refresh; valid exit rewrote the user's text; validator secretly wrote the box; tip choice kept in the screen (lost on rotation); silenced Locale warning (French phone → $12,68)
+Fixed: refresh after every event; copy the box in every exit; all box-writing in refresh; selected = state.tipPercent == tip; Locale.US in one formatAmount helper
+Interface: no — nothing saved or from outside, no second way, math testable directly
+Test plan: 7/7 ✅
+Learned:
