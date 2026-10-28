@@ -136,3 +136,11 @@ Fixed: refresh after every event; copy the box in every exit; all box-writing in
 Interface: no — nothing saved or from outside, no second way, math testable directly
 Test plan: 7/7 ✅
 Learned: Planning a ticket means deciding what goes in the box (inputs and results), which events the user triggers, and whose job each step is, before writing any code. I still need practice: my first plans mixed up layers and forgot to store the inputs.
+
+## Day 11 — Oct 27
+Built: folders (model / data / ui); navigation to a detail screen (Navigator on Flutter, Navigation 3 on Android); checkbox on the row; row tap opens the detail through a callback (onOpenHabit)
+Broke: Android detail screen didn't show "Habit #2" — the Text was hidden under the TopAppBar
+Fixed: used the Scaffold's innerPadding (Box with fillMaxSize().padding(innerPadding), centred)
+Predict: 1) row tap → "Habit #2"  2) checkbox → check + "done today" goes up  3) back (arrow and phone) → list, checks unchanged  4) Android rotate on detail → stays on detail (@Serializable back stack)
+Result: all matched ✅
+Learned: The back stack is a pile of open screens: opening a screen puts it on top, back removes it, and you only see the top one. The screen doesn't open anything itself; it calls a callback ("phone number"), and the top level of the app (MainActivity / main.dart) answers and changes the back stack.
