@@ -144,3 +144,10 @@ Fixed: used the Scaffold's innerPadding (Box with fillMaxSize().padding(innerPad
 Predict: 1) row tap → "Habit #2"  2) checkbox → check + "done today" goes up  3) back (arrow and phone) → list, checks unchanged  4) Android rotate on detail → stays on detail (@Serializable back stack)
 Result: all matched ✅
 Learned: The back stack is a pile of open screens: opening a screen puts it on top, back removes it, and you only see the top one. The screen doesn't open anything itself; it calls a callback ("phone number"), and the top level of the app (MainActivity / main.dart) answers and changes the back stack.
+
+## Day 12 — Oct 29
+Built: getHabit(id): Habit? in the repository (+ every class that signed it); HabitDetailUiState (habitName, doneToday, isNotFound); HabitDetailViewModel with the id; detail screen reacts; Android: viewModel { } recipe + one brain per back-stack sheet
+Broke: return not allowed in a Kotlin init block; Flutter widget.habitId undefined (field was not on the widget class)
+Fixed: init { load() } with the guard clause inside load(); habitId moved onto the StatefulWidget class
+Predict / Result: Gym → name + status ✅; Gym → back → Read → Read ✅; Run → not found ✅; kill → not found ✅; check Gym → detail NOT done ✅ (two pantries)
+Learned: Screens that show the same data must share one data source: each `InMemoryHabitRepository()` is a separate pantry, so a change on one screen never reaches the other. The ViewModel decides, the screen reacts.
