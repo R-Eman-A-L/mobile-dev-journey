@@ -151,3 +151,10 @@ Broke: return not allowed in a Kotlin init block; Flutter widget.habitId undefin
 Fixed: init { load() } with the guard clause inside load(); habitId moved onto the StatefulWidget class
 Predict / Result: Gym → name + status ✅; Gym → back → Read → Read ✅; Run → not found ✅; kill → not found ✅; check Gym → detail NOT done ✅ (two pantries)
 Learned: Screens that show the same data must share one data source: each `InMemoryHabitRepository()` is a separate pantry, so a change on one screen never reaches the other. The ViewModel decides, the screen reacts.
+
+## Day 13 — Oct 29
+Built: one shared repository: created once at the top (Flutter main(), Android StreakBookApp : Application) and handed down to every ViewModel (manual dependency injection)
+Broke: lint warning ViewModelConstructorInComposable in the Android preview
+Fixed: removed the ViewModel default values (compiler listed every spot); suppressed the warning only on the @Preview, with a comment explaining why
+Predict / Result: check Gym → detail done ✅; Run found ✅; uncheck → detail not done ✅; rotate → still done ✅ (repository lives in the Application); kill → data lost ✅ (whole app dies, data only in memory → week 4)
+Learned: Something several screens share is created once at the top of the app (Flutter main(), Android Application class) and handed down to each ViewModel. Those places are created only once and outlive rotation, so every screen gets the same one.
