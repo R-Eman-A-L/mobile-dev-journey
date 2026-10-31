@@ -158,3 +158,12 @@ Broke: lint warning ViewModelConstructorInComposable in the Android preview
 Fixed: removed the ViewModel default values (compiler listed every spot); suppressed the warning only on the @Preview, with a comment explaining why
 Predict / Result: check Gym → detail done ✅; Run found ✅; uncheck → detail not done ✅; rotate → still done ✅ (repository lives in the Application); kill → data lost ✅ (whole app dies, data only in memory → week 4)
 Learned: Something several screens share is created once at the top of the app (Flutter main(), Android Application class) and handed down to each ViewModel. Those places are created only once and outlive rotation, so every screen gets the same one.
+
+
+
+## Day 14 — Oct 30–31
+Built: Habit.completedDates (Set of dates) replaces Habit.doneToday; Clock interface (SystemClock + FakeClock) handed down like the repository; repository.toggle(id, date); HabitListUiState.doneTodayIds; HabitDetailUiState.doneToday now calculated
+Broke: (planning) mixed up what the clock does; the row class was one concept too many
+Fixed: the clock only answers "what's today?"; used Day 2's Set (doneTodayIds) instead of a new row class; learned the chain "work backwards from the screen"
+Predict / Result: SystemClock → Gym unchecked, 0 of 4 ✅; FakeClock(Oct 30) → Gym checked ✅; check Read → detail "done today" ✅; time travel = one line in one file per platform ✅
+Learned: We store dates because we store facts and calculate answers: a date is a fact, "done today" is an answer calculated from it. "Today" comes from an interface (Clock) because it reaches outside the app and tests need a fake, so a FakeClock can be swapped in with one line.
