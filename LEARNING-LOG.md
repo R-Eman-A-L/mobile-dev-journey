@@ -167,3 +167,10 @@ Broke: (planning) mixed up what the clock does; the row class was one concept to
 Fixed: the clock only answers "what's today?"; used Day 2's Set (doneTodayIds) instead of a new row class; learned the chain "work backwards from the screen"
 Predict / Result: SystemClock → Gym unchecked, 0 of 4 ✅; FakeClock(Oct 30) → Gym checked ✅; check Read → detail "done today" ✅; time travel = one line in one file per platform ✅
 Learned: We store dates because we store facts and calculate answers: a date is a fact, "done today" is an answer calculated from it. "Today" comes from an interface (Clock) because it reaches outside the app and tests need a fake, so a FakeClock can be swapped in with one line.
+
+## Day 15 — Oct 31–Nov 1
+Built: HabitDetailUiState.last7Days (7 yes/no, oldest first) + HabitDetailUiState.currentStreak; two private calculation functions in HabitDetailViewModel; 7 circles + streak text on the detail screen
+Broke: (plan) streak loop never moved its day → infinite loop, and the morning rule skipped today; (Flutter) circles overflowed by 317 px (margin 40); last7Days checked today.day instead of day.day, so the circles never changed
+Fixed: while day is in the set → count + 1, day − 1, starting at today if done, else yesterday; margin 4 (7 × 104 − 411 = 317 proved the cause); every line in the loop uses the moving day; print to split data vs screen
+Predict / Result: Oct 29–31 → 3 ✅; Oct 29–30 → 2 ✅; Oct 28–29 → 0 ✅; tick Gym on Oct 31 → 3 ✅
+Learned: A streak is calculated by starting at today (or yesterday if today isn't done yet) and walking backwards one day at a time while the day is marked, counting as you go. The most common loop bug is using the fixed start value instead of the variable that moves, so walk the steps like a computer before coding.
