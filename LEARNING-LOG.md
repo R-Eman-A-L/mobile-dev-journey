@@ -174,3 +174,16 @@ Broke: (plan) streak loop never moved its day → infinite loop, and the morning
 Fixed: while day is in the set → count + 1, day − 1, starting at today if done, else yesterday; margin 4 (7 × 104 − 411 = 317 proved the cause); every line in the loop uses the moving day; print to split data vs screen
 Predict / Result: Oct 29–31 → 3 ✅; Oct 29–30 → 2 ✅; Oct 28–29 → 0 ✅; tick Gym on Oct 31 → 3 ✅
 Learned: A streak is calculated by starting at today (or yesterday if today isn't done yet) and walking backwards one day at a time while the day is marked, counting as you go. The most common loop bug is using the fixed start value instead of the variable that moves, so walk the steps like a computer before coding.
+
+
+## Challenge 2: Birthday Tracker (Flutter), Nov 1–4, 2026
+- Built: a two-screen birthday app. The list adds (name + YYYY-MM-DD birthday, with errors),
+  deletes with a long-press, and opens the detail through a callback with the id.
+  The detail shows "Turns N in X days" / "🎂 Birthday today! Turns N" / "Friend not found".
+- Architecture: FriendRepository + Clock interfaces, created once in main() and handed down;
+  one ViewModel and one UiState per screen; the plan (Step 0 first) is at the top of each ViewModel.
+- Bugs fixed: the age used today's year (Jo 36 → 37, fixed with the next birthday date);
+  difference().inDays lost a day at the March time change (18 → 19, fixed by counting calendar days);
+  "yyyy-mm-dd" showed minutes instead of months; the list box started empty (refresh in the constructor).
+- Learned: find the one thing two answers share before calculating them, and count days on the
+  calendar, not in hours.
