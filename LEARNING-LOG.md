@@ -187,3 +187,13 @@ Learned: A streak is calculated by starting at today (or yesterday if today isn'
   "yyyy-mm-dd" showed minutes instead of months; the list box started empty (refresh in the constructor).
 - Learned: find the one thing two answers share before calculating them, and count days on the
   calendar, not in hours.
+
+  ## Day 16 (Week 4: Saved data), Nov 5, 2026
+- Recap quiz: 6/6.
+- Seen: closing StreakBook (not rotating) loses every change, because InMemoryHabitRepository
+  keeps its data in memory (the whiteboard), not in storage (the notebook).
+- Planned SavedHabitRepository: on creation, read the notebook (empty → starting habits);
+  after add / toggle / delete, change the fields like InMemoryHabitRepository, then write
+  the habits AND nextId to the notebook. Only the composition root changes.
+- Learned: everything the repository keeps must be saved, not just the list. Forgetting
+  nextId gives two habits the same id after reopening.
