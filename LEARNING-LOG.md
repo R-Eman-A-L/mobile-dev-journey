@@ -138,14 +138,16 @@ Test plan: 7/7 ✅
 Learned: Planning a ticket means deciding what goes in the box (inputs and results), which events the user triggers, and whose job each step is, before writing any code. I still need practice: my first plans mixed up layers and forgot to store the inputs.
 
 ## Day 11 — Oct 27
+
 Built: folders (model / data / ui); navigation to a detail screen (Navigator on Flutter, Navigation 3 on Android); checkbox on the row; row tap opens the detail through a callback (onOpenHabit)
 Broke: Android detail screen didn't show "Habit #2" — the Text was hidden under the TopAppBar
 Fixed: used the Scaffold's innerPadding (Box with fillMaxSize().padding(innerPadding), centred)
-Predict: 1) row tap → "Habit #2"  2) checkbox → check + "done today" goes up  3) back (arrow and phone) → list, checks unchanged  4) Android rotate on detail → stays on detail (@Serializable back stack)
+Predict: 1) row tap → "Habit #2" 2) checkbox → check + "done today" goes up 3) back (arrow and phone) → list, checks unchanged 4) Android rotate on detail → stays on detail (@Serializable back stack)
 Result: all matched ✅
 Learned: The back stack is a pile of open screens: opening a screen puts it on top, back removes it, and you only see the top one. The screen doesn't open anything itself; it calls a callback ("phone number"), and the top level of the app (MainActivity / main.dart) answers and changes the back stack.
 
 ## Day 12 — Oct 29
+
 Built: getHabit(id): Habit? in the repository (+ every class that signed it); HabitDetailUiState (habitName, doneToday, isNotFound); HabitDetailViewModel with the id; detail screen reacts; Android: viewModel { } recipe + one brain per back-stack sheet
 Broke: return not allowed in a Kotlin init block; Flutter widget.habitId undefined (field was not on the widget class)
 Fixed: init { load() } with the guard clause inside load(); habitId moved onto the StatefulWidget class
@@ -153,15 +155,15 @@ Predict / Result: Gym → name + status ✅; Gym → back → Read → Read ✅;
 Learned: Screens that show the same data must share one data source: each `InMemoryHabitRepository()` is a separate pantry, so a change on one screen never reaches the other. The ViewModel decides, the screen reacts.
 
 ## Day 13 — Oct 29
+
 Built: one shared repository: created once at the top (Flutter main(), Android StreakBookApp : Application) and handed down to every ViewModel (manual dependency injection)
 Broke: lint warning ViewModelConstructorInComposable in the Android preview
 Fixed: removed the ViewModel default values (compiler listed every spot); suppressed the warning only on the @Preview, with a comment explaining why
 Predict / Result: check Gym → detail done ✅; Run found ✅; uncheck → detail not done ✅; rotate → still done ✅ (repository lives in the Application); kill → data lost ✅ (whole app dies, data only in memory → week 4)
 Learned: Something several screens share is created once at the top of the app (Flutter main(), Android Application class) and handed down to each ViewModel. Those places are created only once and outlive rotation, so every screen gets the same one.
 
-
-
 ## Day 14 — Oct 30–31
+
 Built: Habit.completedDates (Set of dates) replaces Habit.doneToday; Clock interface (SystemClock + FakeClock) handed down like the repository; repository.toggle(id, date); HabitListUiState.doneTodayIds; HabitDetailUiState.doneToday now calculated
 Broke: (planning) mixed up what the clock does; the row class was one concept too many
 Fixed: the clock only answers "what's today?"; used Day 2's Set (doneTodayIds) instead of a new row class; learned the chain "work backwards from the screen"
@@ -169,14 +171,15 @@ Predict / Result: SystemClock → Gym unchecked, 0 of 4 ✅; FakeClock(Oct 30) �
 Learned: We store dates because we store facts and calculate answers: a date is a fact, "done today" is an answer calculated from it. "Today" comes from an interface (Clock) because it reaches outside the app and tests need a fake, so a FakeClock can be swapped in with one line.
 
 ## Day 15 — Oct 31–Nov 1
+
 Built: HabitDetailUiState.last7Days (7 yes/no, oldest first) + HabitDetailUiState.currentStreak; two private calculation functions in HabitDetailViewModel; 7 circles + streak text on the detail screen
 Broke: (plan) streak loop never moved its day → infinite loop, and the morning rule skipped today; (Flutter) circles overflowed by 317 px (margin 40); last7Days checked today.day instead of day.day, so the circles never changed
 Fixed: while day is in the set → count + 1, day − 1, starting at today if done, else yesterday; margin 4 (7 × 104 − 411 = 317 proved the cause); every line in the loop uses the moving day; print to split data vs screen
 Predict / Result: Oct 29–31 → 3 ✅; Oct 29–30 → 2 ✅; Oct 28–29 → 0 ✅; tick Gym on Oct 31 → 3 ✅
 Learned: A streak is calculated by starting at today (or yesterday if today isn't done yet) and walking backwards one day at a time while the day is marked, counting as you go. The most common loop bug is using the fixed start value instead of the variable that moves, so walk the steps like a computer before coding.
 
-
 ## Challenge 2: Birthday Tracker (Flutter), Nov 1–4, 2026
+
 - Built: a two-screen birthday app. The list adds (name + YYYY-MM-DD birthday, with errors),
   deletes with a long-press, and opens the detail through a callback with the id.
   The detail shows "Turns N in X days" / "🎂 Birthday today! Turns N" / "Friend not found".
@@ -189,6 +192,7 @@ Learned: A streak is calculated by starting at today (or yesterday if today isn'
   calendar, not in hours.
 
   ## Day 16 (Week 4: Saved data), Nov 5, 2026
+
 - Recap quiz: 6/6.
 - Seen: closing StreakBook (not rotating) loses every change, because InMemoryHabitRepository
   keeps its data in memory (the whiteboard), not in storage (the notebook).
@@ -197,3 +201,15 @@ Learned: A streak is calculated by starting at today (or yesterday if today isn'
   the habits AND nextId to the notebook. Only the composition root changes.
 - Learned: everything the repository keeps must be saved, not just the list. Forgetting
   nextId gives two habits the same id after reopening.
+
+  ## Day 17 (Week 4: Saved data), Nov 5, 2026
+
+- Async in DartPad: a Future is a buzzer ("the answer will come later"); async = this
+  function may wait; await = wait for the buzzer without freezing the worker. Without
+  await you get the buzzer itself: Instance of 'Future<List<String>>'.
+- Why: one worker (the main thread) draws the screen; making it wait freezes the app.
+- StreakBook plan: main() becomes async, waits once for the notebook, then creates
+  SavedHabitRepository with full fields. getHabits() stays instant, so the ViewModels
+  and screens don't change.
+- Learned: a constructor can't wait; do the slow part before it and pass in the result.
+  Never hand the screens a second copy of data the repository already holds.
