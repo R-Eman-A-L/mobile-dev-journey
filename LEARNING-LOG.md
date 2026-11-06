@@ -213,3 +213,13 @@ Learned: A streak is calculated by starting at today (or yesterday if today isn'
   and screens don't change.
 - Learned: a constructor can't wait; do the slow part before it and pass in the result.
   Never hand the screens a second copy of data the repository already holds.
+
+
+## Day 18 (Week 4: Saved data), Nov 5, 2026
+- The notebook (shared_preferences) only takes simple values, so habits must become text.
+- JSON: Habit.toJson() → a form (Map) with 'id', 'name', 'completedDates';
+  jsonEncode → text. jsonDecode → form; Habit.fromJson(form) reads each label with `as`
+  and builds the Habit (a factory constructor). Dates ↔ "yyyy-MM-dd" texts, Set ↔ list.
+- Bug: `as List<String>` passed the shortcut test but failed after jsonDecode
+  ("List<dynamic> is not a subtype of List<String>"): check the box as List, each item as String.
+- Learned: test the path the real app will take; a shortcut test can pass while the real thing fails.
