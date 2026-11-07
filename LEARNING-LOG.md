@@ -223,3 +223,17 @@ Learned: A streak is calculated by starting at today (or yesterday if today isn'
 - Bug: `as List<String>` passed the shortcut test but failed after jsonDecode
   ("List<dynamic> is not a subtype of List<String>"): check the box as List, each item as String.
 - Learned: test the path the real app will take; a shortcut test can pass while the real thing fails.
+
+
+
+## Day 19 (Week 4: Saved data), Nov 7, 2026
+- Recap quiz: 5/5.
+- Built SavedHabitRepository (Flutter) with shared_preferences (SharedPreferencesAsync):
+  pages 'habits' (JSON text) and 'nextId'. main() is async: ensureInitialized, read both
+  pages, then create the repository with full fields. _save() writes after add/toggle/delete
+  without waiting. Only main() changed; no ViewModel or screen did.
+- Bugs caught: a missing `return` hidden by `habitsText!` (first launch would crash);
+  nextId fallback must be the biggest id + 1, not the biggest id.
+- Tests: fresh install, "Read" survives, checks survive, Walk/Read ids don't clash. All pass.
+- Learned: a `!` that makes an error go away is a promise, so check it's true; reading is
+  the saving steps in reverse.
