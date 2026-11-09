@@ -279,3 +279,17 @@ Learned: A streak is calculated by starting at today (or yesterday if today isn'
   smart-cast (copy it into a local val); compute the text before launch.
 - Tests: fresh install, survives closing, checks survive, ids don't clash, tap + rotate. All pass.
 - Learned: early return only when nothing after it is needed. Week 4 done on both platforms.
+
+
+## Day 22 (Week 5: Network), Nov 9, 2026
+- Recap quiz: 6/6.
+- Three situations, one box: Way A (isLoading + error + quote) allows 8 boxes, only 3 make
+  sense; Way B, a sealed type (QuoteState: Loading / Error(message) / Success(quote)),
+  allows only the 3, and `when` must handle all of them.
+- Sealed = a TYPE we create (like String): a closed list of situations, always exactly one,
+  each with its own data. Needs a parameter → data class; no parameter → data object.
+- Naming: UiState = a screen's whole box only, so the card's type is QuoteState, one field
+  in HabitListUiState.
+- Planned QUOTE-1: HabitListViewModel.loadQuote() on viewModelScope; Loading first, then
+  ask; copy the box as it is when the answer arrives.
+- Learned: refresh() must COPY the box now: building a new box would reset quote to Loading.
