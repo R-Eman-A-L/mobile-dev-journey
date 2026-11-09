@@ -266,3 +266,16 @@ Learned: A streak is calculated by starting at today (or yesterday if today isn'
 - Learned: slow work goes on a separate task so the app isn't blocked; if I need the
   result, the next steps go inside the same task after the wait. The wait goes where the
   "show" is.
+
+
+## Day 21 (Week 4: Saved data, Android), Nov 8, 2026
+- DataStore: one notebook (val Context.habitStore by preferencesDataStore), pages HABITS and
+  NEXT_ID. Read once with data.first(); write both pages in ONE edit { } (no half-written state).
+- StreakBookApp creates the repository in onCreate, because the context (this) is only ready
+  there. MainActivity: lifecycleScope.launch { load(); setContent {...} }.
+- JSON: @Serializable HabitForm; Habit.toForm() / HabitForm.toHabit();
+  Json.encodeToString / decodeFromString<List<HabitForm>>. No 'as' needed.
+- Traps: return in one branch would skip loaded = true (use if / else); pages[HABITS] isn't
+  smart-cast (copy it into a local val); compute the text before launch.
+- Tests: fresh install, survives closing, checks survive, ids don't clash, tap + rotate. All pass.
+- Learned: early return only when nothing after it is needed. Week 4 done on both platforms.
