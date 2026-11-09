@@ -214,8 +214,8 @@ Learned: A streak is calculated by starting at today (or yesterday if today isn'
 - Learned: a constructor can't wait; do the slow part before it and pass in the result.
   Never hand the screens a second copy of data the repository already holds.
 
-
 ## Day 18 (Week 4: Saved data), Nov 5, 2026
+
 - The notebook (shared_preferences) only takes simple values, so habits must become text.
 - JSON: Habit.toJson() → a form (Map) with 'id', 'name', 'completedDates';
   jsonEncode → text. jsonDecode → form; Habit.fromJson(form) reads each label with `as`
@@ -224,13 +224,12 @@ Learned: A streak is calculated by starting at today (or yesterday if today isn'
   ("List<dynamic> is not a subtype of List<String>"): check the box as List, each item as String.
 - Learned: test the path the real app will take; a shortcut test can pass while the real thing fails.
 
-
-
 ## Day 19 (Week 4: Saved data), Nov 7, 2026
+
 - Recap quiz: 5/5.
 - Built SavedHabitRepository (Flutter) with shared_preferences (SharedPreferencesAsync):
   pages 'habits' (JSON text) and 'nextId'. main() is async: ensureInitialized, read both
-  pages, then create the repository with full fields. _save() writes after add/toggle/delete
+  pages, then create the repository with full fields. \_save() writes after add/toggle/delete
   without waiting. Only main() changed; no ViewModel or screen did.
 - Bugs caught: a missing `return` hidden by `habitsText!` (first launch would crash);
   nextId fallback must be the biggest id + 1, not the biggest id.
@@ -238,8 +237,8 @@ Learned: A streak is calculated by starting at today (or yesterday if today isn'
 - Learned: a `!` that makes an error go away is a promise, so check it's true; reading is
   the saving steps in reverse.
 
-
   ## Day 20 (Week 4: Saved data, Android), Nov 7–8, 2026
+
 - Recap quiz: 5/5.
 - Kotlin's buzzer: suspend (may wait), launch (start a task on the side), scope (the owner
   of the tasks). A suspend function can't be called from a normal function: red error
@@ -260,6 +259,10 @@ Learned: A streak is calculated by starting at today (or yesterday if today isn'
   screen: it creates the shared things. MainActivity shows the app. Flutter's main() does both.
 - Android plan: MainActivity → lifecycleScope.launch { load(); setContent {...} }
   (read THEN show). save() → appScope.launch { write }. Reading and writing are both slow.
+  - Recompose (redraw parts, Activity kept) ≠ destroy + recreate (configuration change:
+    rotation, dark mode, language, size → new Activity, old lifecycleScope cancelled,
+    ViewModels survive) ≠ destroy for good (back, swipe away). So load() needs a guard:
+    already loaded → stop.
 - Learned: slow work goes on a separate task so the app isn't blocked; if I need the
   result, the next steps go inside the same task after the wait. The wait goes where the
   "show" is.
