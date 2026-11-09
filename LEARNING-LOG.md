@@ -237,3 +237,29 @@ Learned: A streak is calculated by starting at today (or yesterday if today isn'
 - Tests: fresh install, "Read" survives, checks survive, Walk/Read ids don't clash. All pass.
 - Learned: a `!` that makes an error go away is a promise, so check it's true; reading is
   the saving steps in reverse.
+
+
+  ## Day 20 (Week 4: Saved data, Android), Nov 7–8, 2026
+- Recap quiz: 5/5.
+- Kotlin's buzzer: suspend (may wait), launch (start a task on the side), scope (the owner
+  of the tasks). A suspend function can't be called from a normal function: red error
+  "can only be called from a coroutine or another suspend function".
+- Playground stopwatch: line 2 at 7 ms, the launched line at 2021 ms → launch doesn't block.
+  Two launches with 2 s each both finish near 2000 ms: they run side by side, and the
+  finishing order isn't guaranteed.
+- A scope owns many tasks (one per launch). When it closes, its unfinished tasks are
+  cancelled: viewModelScope → the user really leaves the screen (not rotation);
+  lifecycleScope → the Activity is destroyed (rotation too); appScope → the process ends.
+  Swiping the app away stops everything.
+- Which scope? "If the user leaves this screen right now, must this task still finish?"
+  Yes → appScope (saving). No → where the code lives: ViewModel → viewModelScope,
+  composable → rememberCoroutineScope, Activity → lifecycleScope.
+- appScope isn't built in: created once in StreakBookApp (CoroutineScope(SupervisorJob())),
+  one for the whole app, shared with every repository that needs it.
+- StreakBookApp = the one Application class (manifest), created by Android before any
+  screen: it creates the shared things. MainActivity shows the app. Flutter's main() does both.
+- Android plan: MainActivity → lifecycleScope.launch { load(); setContent {...} }
+  (read THEN show). save() → appScope.launch { write }. Reading and writing are both slow.
+- Learned: slow work goes on a separate task so the app isn't blocked; if I need the
+  result, the next steps go inside the same task after the wait. The wait goes where the
+  "show" is.
