@@ -293,3 +293,22 @@ Learned: A streak is calculated by starting at today (or yesterday if today isn'
 - Planned QUOTE-1: HabitListViewModel.loadQuote() on viewModelScope; Loading first, then
   ask; copy the box as it is when the answer arrives.
 - Learned: refresh() must COPY the box now: building a new box would reset quote to Loading.
+
+
+## Day 23 (Week 5: Network), Nov 10, 2026
+- Recap quiz: 5/5.
+- HTTP: a request to a URL; a response with a status (2xx OK, 4xx asked wrong, 5xx server
+  broke) and a body (JSON). dummyjson.com/quotes/random → {"id","quote","author"}.
+  A missing id gave a JSON message; a typo URL gave back a web page, not JSON.
+- No reply (no internet, timeout) = no status: the library throws by itself. An unreadable
+  body throws by itself too. 404/500 don't throw by themselves: the repository checks for
+  2xx and throws "Bad status: N". (408/504 have "timeout" in the name but are real replies.)
+- Exceptions: the repository throws; the ViewModel catches (try / catch), logs the technical
+  message, and shows "Couldn't load the quote" + Try again. Never show technical text.
+- Kinds of errors: different message or action → a different kind (a sealed list of app
+  errors); same message and same action → one kind is enough (QUOTE-1).
+- Planned QuoteRepository.getQuote() → Quote or throws; QuoteForm(id, quote, author)
+  → toQuote() → Quote(text, author); FakeQuoteRepository(shouldFail) never knows QuoteState.
+- Learned: a slow function → ask "Does the caller need the result?" Yes → suspend
+  (getQuote waits inside loadQuote's viewModelScope ticket). No → a normal function with
+  scope.launch inside (save() starts its own appScope ticket and returns).
