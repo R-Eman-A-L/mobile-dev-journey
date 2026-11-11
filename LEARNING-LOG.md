@@ -312,3 +312,18 @@ Learned: A streak is calculated by starting at today (or yesterday if today isn'
 - Learned: a slow function → ask "Does the caller need the result?" Yes → suspend
   (getQuote waits inside loadQuote's viewModelScope ticket). No → a normal function with
   scope.launch inside (save() starts its own appScope ticket and returns).
+
+
+  ## Day 24 (Week 5: Network, Flutter), Nov 11, 2026
+- Recap quiz: 5/5.
+- http package: client.get(Uri.parse(url)).timeout(10 s); response.statusCode, response.body.
+  http.Client created once in main() and handed to NetworkQuoteRepository. INTERNET
+  permission added for release builds.
+- QuoteForm.fromJson → toQuote(); FakeQuoteRepository(shouldFail) with a 1 s delay to see Loading.
+- Airplane mode: "ClientException with SocketException: Failed host lookup" = no reply,
+  no status; caught by the ViewModel → "Couldn't load the quote" + Try again, no crash.
+- sealed QuoteState (QuoteLoading / QuoteError / QuoteSuccess, not Error: Dart has one);
+  QuoteCard widget: data down, events up, theme colors.
+- Bugs: status check must be a range (< 200 || >= 300); copyWith(error: null) can't clear
+  (refresh builds a new box and names quote: _state.quote).
+- Learned: a Dart copyWith with ?? can never set null; leave nullable fields out of it.
