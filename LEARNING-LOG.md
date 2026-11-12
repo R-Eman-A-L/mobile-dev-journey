@@ -327,3 +327,20 @@ Learned: A streak is calculated by starting at today (or yesterday if today isn'
 - Bugs: status check must be a range (< 200 || >= 300); copyWith(error: null) can't clear
   (refresh builds a new box and names quote: _state.quote).
 - Learned: a Dart copyWith with ?? can never set null; leave nullable fields out of it.
+
+
+## Day 25 (Week 5: Network, Android), Nov 12, 2026
+- News: Navigation 3 v1.2 adds type-safe deep links with @Serializable keys (ADS, Nov 4).
+- Recap quiz: 5/5.
+- Ktor 3.6.1: HttpClient(OkHttp) { install(HttpTimeout) { requestTimeoutMillis = 10_000 } },
+  created once in StreakBookApp. client.get(url); status !in 200..299 → throw;
+  Json.decodeFromString<QuoteForm>(bodyAsText()). INTERNET permission is required.
+- Airplane mode: UnknownHostException (same as Flutter's "Failed host lookup").
+- throw = stop here, pass the problem up the chain of callers; the first matching catch
+  handles it; no catch at the top = crash. Rethrow CancellationException (the manager's
+  stop signal) before catch (e: Exception).
+- _uiState.update { it.copy(...) } = copy the box as it is now; refresh() copies (quote stays).
+- Bug: the app crashed after "Quote failed" was logged → the same exception twice = two
+  callers; leftover test code called getQuote() with no net. Found with Alt+F7.
+- Learned: red in Logcat isn't a crash; FATAL EXCEPTION is. The try must be in the same
+  ticket as the throwing line. Week 5 done on both platforms.
