@@ -267,8 +267,8 @@ Learned: A streak is calculated by starting at today (or yesterday if today isn'
   result, the next steps go inside the same task after the wait. The wait goes where the
   "show" is.
 
-
 ## Day 21 (Week 4: Saved data, Android), Nov 8, 2026
+
 - DataStore: one notebook (val Context.habitStore by preferencesDataStore), pages HABITS and
   NEXT_ID. Read once with data.first(); write both pages in ONE edit { } (no half-written state).
 - StreakBookApp creates the repository in onCreate, because the context (this) is only ready
@@ -280,8 +280,8 @@ Learned: A streak is calculated by starting at today (or yesterday if today isn'
 - Tests: fresh install, survives closing, checks survive, ids don't clash, tap + rotate. All pass.
 - Learned: early return only when nothing after it is needed. Week 4 done on both platforms.
 
-
 ## Day 22 (Week 5: Network), Nov 9, 2026
+
 - Recap quiz: 6/6.
 - Three situations, one box: Way A (isLoading + error + quote) allows 8 boxes, only 3 make
   sense; Way B, a sealed type (QuoteState: Loading / Error(message) / Success(quote)),
@@ -294,8 +294,8 @@ Learned: A streak is calculated by starting at today (or yesterday if today isn'
   ask; copy the box as it is when the answer arrives.
 - Learned: refresh() must COPY the box now: building a new box would reset quote to Loading.
 
-
 ## Day 23 (Week 5: Network), Nov 10, 2026
+
 - Recap quiz: 5/5.
 - HTTP: a request to a URL; a response with a status (2xx OK, 4xx asked wrong, 5xx server
   broke) and a body (JSON). dummyjson.com/quotes/random → {"id","quote","author"}.
@@ -313,8 +313,8 @@ Learned: A streak is calculated by starting at today (or yesterday if today isn'
   (getQuote waits inside loadQuote's viewModelScope ticket). No → a normal function with
   scope.launch inside (save() starts its own appScope ticket and returns).
 
-
   ## Day 24 (Week 5: Network, Flutter), Nov 11, 2026
+
 - Recap quiz: 5/5.
 - http package: client.get(Uri.parse(url)).timeout(10 s); response.statusCode, response.body.
   http.Client created once in main() and handed to NetworkQuoteRepository. INTERNET
@@ -325,11 +325,11 @@ Learned: A streak is calculated by starting at today (or yesterday if today isn'
 - sealed QuoteState (QuoteLoading / QuoteError / QuoteSuccess, not Error: Dart has one);
   QuoteCard widget: data down, events up, theme colors.
 - Bugs: status check must be a range (< 200 || >= 300); copyWith(error: null) can't clear
-  (refresh builds a new box and names quote: _state.quote).
+  (refresh builds a new box and names quote: \_state.quote).
 - Learned: a Dart copyWith with ?? can never set null; leave nullable fields out of it.
 
-
 ## Day 25 (Week 5: Network, Android), Nov 12, 2026
+
 - News: Navigation 3 v1.2 adds type-safe deep links with @Serializable keys (ADS, Nov 4).
 - Recap quiz: 5/5.
 - Ktor 3.6.1: HttpClient(OkHttp) { install(HttpTimeout) { requestTimeoutMillis = 10_000 } },
@@ -339,8 +339,24 @@ Learned: A streak is calculated by starting at today (or yesterday if today isn'
 - throw = stop here, pass the problem up the chain of callers; the first matching catch
   handles it; no catch at the top = crash. Rethrow CancellationException (the manager's
   stop signal) before catch (e: Exception).
-- _uiState.update { it.copy(...) } = copy the box as it is now; refresh() copies (quote stays).
+- \_uiState.update { it.copy(...) } = copy the box as it is now; refresh() copies (quote stays).
 - Bug: the app crashed after "Quote failed" was logged → the same exception twice = two
   callers; leftover test code called getQuote() with no net. Found with Alt+F7.
 - Learned: red in Logcat isn't a crash; FATAL EXCEPTION is. The try must be in the same
   ticket as the throwing line. Week 5 done on both platforms.
+
+## Day 26 (Week 6: Dependency injection), Nov 14, 2026
+
+- Did you know: Hilt is built on Dagger, which checks the dependency graph at compile time
+  (missing or circular dependencies fail the build).
+- Recap quiz: 5/5.
+- DI = one place that knows how to make each dependency (and whether it's shared); a part
+  that needs one asks, and receives it through its constructor; nobody carries what they
+  don't use (no more parameter drilling).
+- StreakBook's map: shared http.Client, notebook, quote repository, habit repository, clock.
+  HabitListViewModel ← habit repo, clock, quote repo; HabitDetailViewModel ← habit repo, clock.
+  Carriers to clean: MyApp, HabitListScreen, HabitDetailScreen (and their States).
+- Special case: the habit repository needs an await first, so main() builds it and hands
+  the tool a ready-made one.
+- Tests swap: FakeQuoteRepository, FakeClock, FakeHabitRepository.
+- Learned: draw the dependency map before installing a DI tool.
