@@ -360,3 +360,19 @@ Learned: A streak is calculated by starting at today (or yesterday if today isn'
   the tool a ready-made one.
 - Tests swap: FakeQuoteRepository, FakeClock, FakeHabitRepository.
 - Learned: draw the dependency map before installing a DI tool.
+
+## Day 27 (Week 6: Dependency injection, Flutter), Nov 15, 2026
+
+- News: Flutter 3.50 (Nov 11) deprecates the bundled Material/Cupertino → material_ui packages.
+- Recap quiz: 5/5.
+- Riverpod 3.5.0: each dependency is a Provider (a recipe; lazy and shared by default);
+  ProviderScope wraps the app; screens are ConsumerStatefulWidget and use ref.read in
+  initState to build their ViewModel. MyApp and the screens no longer carry dependencies.
+- habitRepositoryProvider throws "must be provided in main()"; main() awaits the notebook,
+  builds SavedHabitRepository, and hands it over with overrideWith.
+- ref.watch = use the newest value and redo my work when it changes (recipes, build);
+  ref.read = the value right now, once, for an action (initState, onPressed).
+- Tests: one-line FakeQuoteRepository override → error card, no other file changed.
+  Removing the habit override: the build succeeds, then a runtime ProviderException with my message.
+- Learned: Riverpod checks at runtime, so a missing piece needs a clear error message.
+  Ran on my physical phone when the emulator was full.
