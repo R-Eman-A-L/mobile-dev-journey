@@ -376,3 +376,17 @@ Learned: A streak is calculated by starting at today (or yesterday if today isn'
   Removing the habit override: the build succeeds, then a runtime ProviderException with my message.
 - Learned: Riverpod checks at runtime, so a missing piece needs a clear error message.
   Ran on my physical phone when the emulator was full.
+
+
+## Day 28 (Week 6: Dependency injection, Android), Nov 15, 2026
+- Did you know: hiltViewModel() moved to hilt-lifecycle-viewmodel-compose (1.4.0),
+  so apps don't pull in the old Navigation library.
+- DI = Dependency Injection: a class receives what it needs from outside.
+- Hilt map: @HiltAndroidApp (the app's supply room), @AndroidEntryPoint (a screen that asks),
+  @Inject constructor (my classes), @Provides (classes I didn't write: HttpClient, DataStore,
+  appScope), @Binds (interface → implementation), @Singleton (one for the whole app),
+  @HiltViewModel + hiltViewModel(), assisted injection for the habitId.
+- A class asked for by its interface needs @Inject constructor AND @Binds.
+- @Singleton on SavedHabitRepository: MainActivity and the ViewModels get the same object.
+- Learned: on Android, the habit repository needs no await to be made (load() waits later),
+  so Hilt can make it from a normal recipe. The one-line swap is the @Binds line.
