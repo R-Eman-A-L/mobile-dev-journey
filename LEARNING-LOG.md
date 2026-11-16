@@ -405,3 +405,18 @@ Learned: A streak is calculated by starting at today (or yesterday if today isn'
   "QuoteRepository … is injected at HabitListViewModel(…, quoteRepository)". No app at all.
 - Learned: compile-time DI catches a missing recipe before the app exists; read the error
   for WHAT is missing and WHO asked; never edit generated code. Week 6 done on both platforms.
+
+
+  ## Day 30 (Week 7: Testing), Nov 16, 2026
+- News: Kotlin 2.5.0-RC turns on the unused return value checker (catches a copy() that's
+  thrown away).
+- A test = Arrange / Act / Assert. Unit test: one behavior, repeatable, fast, isolated (no
+  phone, no network). Screen test: does what a user does and checks exact text on screen.
+- Planned 14 unit tests + 3 screen tests for Flutter StreakBook, using FakeClock,
+  FakeHabitRepository, FakeQuoteRepository; regression tests (R) for real bugs (the add
+  error not clearing, refresh() resetting the quote, the 200/299 status check).
+- Tests that call the real internet aren't unit tests → MockClient (package:http/testing)
+  gives fixed replies with no network.
+- Learned: when the Act starts something slow (the quote), the test must wait before the
+  Assert; assert what the USER sees ("Couldn't load the quote"), not the technical message;
+  real values everywhere, so anyone can check a line without asking me a question.
