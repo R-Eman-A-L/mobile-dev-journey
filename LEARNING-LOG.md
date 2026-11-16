@@ -390,3 +390,18 @@ Learned: A streak is calculated by starting at today (or yesterday if today isn'
 - @Singleton on SavedHabitRepository: MainActivity and the ViewModels get the same object.
 - Learned: on Android, the habit repository needs no await to be made (load() waits later),
   so Hilt can make it from a normal recipe. The one-line swap is the @Binds line.
+
+
+  ## Day 29 (Week 6: Dependency injection, Android), Nov 15, 2026
+- Did you know: Hilt 2.59+ needs AGP 9 + Gradle 9.1; this project already has them.
+- Setup checked against current versions: Hilt 2.60.1, KSP 2.3.14 (not tied to Kotlin
+  since 2.3.0), androidx.hilt 1.4.0, Java 17. kapt doesn't work with AGP 9.
+- KSP reads annotations during the build and writes code into build/generated.
+- AppModule: @Provides (HttpClient, DataStore with @ApplicationContext, appScope);
+  BindingsModule: @Binds (Clock, QuoteRepository, HabitRepository).
+  @Inject constructor + @Singleton on my classes; @HiltViewModel; assisted injection for
+  HabitDetailViewModel (habitId); MainActivity: @Inject lateinit var habitRepository.
+- Test: removing bindQuoteRepository → the build fails with [Dagger/MissingBinding]
+  "QuoteRepository … is injected at HabitListViewModel(…, quoteRepository)". No app at all.
+- Learned: compile-time DI catches a missing recipe before the app exists; read the error
+  for WHAT is missing and WHO asked; never edit generated code. Week 6 done on both platforms.
