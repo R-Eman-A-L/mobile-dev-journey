@@ -420,3 +420,19 @@ Learned: A streak is calculated by starting at today (or yesterday if today isn'
 - Learned: when the Act starts something slow (the quote), the test must wait before the
   Assert; assert what the USER sees ("Couldn't load the quote"), not the technical message;
   real values everywhere, so anyone can check a line without asking me a question.
+
+
+
+  ## Day 31 (Week 7: Testing, Flutter), Nov 17, 2026
+- Did you know: flaky tests (pass/fail with no code change) make teams ignore red tests.
+- Recap quiz (harder): 5/5.
+- flutter test runs on the computer (no phone). test(), group(), setUp() (fresh fakes for
+  each test), expect() with matchers (isTrue, isA<T>(), startsWith, throwsA, having).
+- Async: FakeQuoteRepository(delay: Duration.zero) + wait ~10 ms after the Act.
+  Check isA<QuoteSuccess>() BEFORE casting with as.
+- MockClient (package:http/testing) gives fixed replies: a 500 test FOUND A REAL BUG:
+  statusCode < 200 && statusCode >= 300 can never be true → fixed with ||.
+- Broke the app on purpose (the Day 24 200/299 bug): test 13 turned red with
+  "Bad status: 201", then green after the fix.
+- Learned: tests find bugs manual testing can't reach; never trust a test you've never
+  seen fail. 14 unit tests passing.
