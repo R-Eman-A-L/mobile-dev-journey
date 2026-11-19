@@ -377,8 +377,8 @@ Learned: A streak is calculated by starting at today (or yesterday if today isn'
 - Learned: Riverpod checks at runtime, so a missing piece needs a clear error message.
   Ran on my physical phone when the emulator was full.
 
-
 ## Day 28 (Week 6: Dependency injection, Android), Nov 15, 2026
+
 - Did you know: hiltViewModel() moved to hilt-lifecycle-viewmodel-compose (1.4.0),
   so apps don't pull in the old Navigation library.
 - DI = Dependency Injection: a class receives what it needs from outside.
@@ -391,8 +391,8 @@ Learned: A streak is calculated by starting at today (or yesterday if today isn'
 - Learned: on Android, the habit repository needs no await to be made (load() waits later),
   so Hilt can make it from a normal recipe. The one-line swap is the @Binds line.
 
-
   ## Day 29 (Week 6: Dependency injection, Android), Nov 15, 2026
+
 - Did you know: Hilt 2.59+ needs AGP 9 + Gradle 9.1; this project already has them.
 - Setup checked against current versions: Hilt 2.60.1, KSP 2.3.14 (not tied to Kotlin
   since 2.3.0), androidx.hilt 1.4.0, Java 17. kapt doesn't work with AGP 9.
@@ -406,8 +406,8 @@ Learned: A streak is calculated by starting at today (or yesterday if today isn'
 - Learned: compile-time DI catches a missing recipe before the app exists; read the error
   for WHAT is missing and WHO asked; never edit generated code. Week 6 done on both platforms.
 
-
   ## Day 30 (Week 7: Testing), Nov 16, 2026
+
 - News: Kotlin 2.5.0-RC turns on the unused return value checker (catches a copy() that's
   thrown away).
 - A test = Arrange / Act / Assert. Unit test: one behavior, repeatable, fast, isolated (no
@@ -421,9 +421,8 @@ Learned: A streak is calculated by starting at today (or yesterday if today isn'
   Assert; assert what the USER sees ("Couldn't load the quote"), not the technical message;
   real values everywhere, so anyone can check a line without asking me a question.
 
-
-
   ## Day 31 (Week 7: Testing, Flutter), Nov 17, 2026
+
 - Did you know: flaky tests (pass/fail with no code change) make teams ignore red tests.
 - Recap quiz (harder): 5/5.
 - flutter test runs on the computer (no phone). test(), group(), setUp() (fresh fakes for
@@ -436,3 +435,17 @@ Learned: A streak is calculated by starting at today (or yesterday if today isn'
   "Bad status: 201", then green after the fix.
 - Learned: tests find bugs manual testing can't reach; never trust a test you've never
   seen fail. 14 unit tests passing.
+
+  ## Day 32 (Week 7: Testing, Flutter), Nov 19, 2026
+
+- News: Android Studio channels (Canary, Beta/RC, Stable); stay on Stable while learning.
+- Recap quiz (harder): 5/5.
+- Widget tests: testWidgets + tester; pumpWidget draws the screen; find.text / find.byType;
+  tap, longPress, enterText; findsOneWidget / findsNothing. Flutter doesn't redraw by itself
+  in tests: pump() once, pumpAndSettle() until nothing moves. Time is fake in testWidgets.
+- The app is drawn inside ProviderScope(overrides: [fakes]) + MyApp: DI makes screen tests
+  possible with no storage, no internet, a fixed day.
+- Broke the long-press on purpose: S3 failed with "Found 1 widget with text Read", which
+  shows what was really on screen.
+- Learned: check the starting point before the Act, so the test proves the action caused
+  the change. 17 Flutter tests passing.
