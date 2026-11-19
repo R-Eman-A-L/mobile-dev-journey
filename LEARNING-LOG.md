@@ -449,3 +449,25 @@ Learned: A streak is calculated by starting at today (or yesterday if today isn'
   shows what was really on screen.
 - Learned: check the starting point before the Act, so the test proves the action caused
   the change. 17 Flutter tests passing.
+
+
+## Day 33 (Nov 19): Android unit tests
+
+Did: 10 JUnit tests for HabitListViewModel (add, blank, duplicate, trim (R),
+delete, error clears, Loading, Success, Error, toggle keeps the quote).
+MainDispatcherRule + runTest + advanceUntilIdle. FakeHabitRepository in
+src/main/data. AppLogger interface (AndroidLogger + FakeLogger, @Binds).
+
+Problem: Removing trim() left tests green. Breaking on purpose showed onAdd
+validated the trimmed name but saved the untrimmed one, and FakeHabitRepository
+was trimming and hiding it. Test 9 failed with "Method e in android.util.Log
+not mocked". Test 10 crashed with ClassCastException.
+
+Fix: Trim once in onAdd, validate and add the same value, isEmpty() so the trim
+is the only guard. Removed trim from the fake and SavedHabitRepository. Moved
+Log.e behind AppLogger. Checked the type before the cast.
+
+Learned: A fake must behave exactly like the real class, or the tests check a
+world that doesn't exist. When a test stays green after a break, it tells me
+what that test does NOT protect. Android classes are empty shells in unit
+tests, so Android calls go behind an interface, like the Clock.
