@@ -471,3 +471,20 @@ Learned: A fake must behave exactly like the real class, or the tests check a
 world that doesn't exist. When a test stays green after a break, it tells me
 what that test does NOT protect. Android classes are empty shells in unit
 tests, so Android calls go behind an interface, like the Clock.
+
+## Day 34 (Nov 20): Android network and detail tests
+
+Did: NetworkQuoteRepositoryTest with Ktor's MockEngine (200 becomes a Quote,
+500 throws). HabitDetailViewModelTest (unknown id shows "not found", done
+yesterday and the day before = 2-day streak). 14 unit tests in src/test.
+
+Problem: None blocking. Each test was broken once on purpose (&& in the status
+check, isNotFound always false, streak starting at 1) and each turned red.
+
+Fix: n/a
+
+Learned: Whatever comes in through the constructor can be swapped in a test:
+HttpClient(MockEngine) instead of OkHttp. To test that code throws, call it,
+then fail(), and catch the exception. fail() throws an AssertionError (an Error,
+not an Exception), so catch (e: Exception) doesn't hide it, but
+catch (e: Throwable) would.
