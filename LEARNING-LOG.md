@@ -488,3 +488,27 @@ HttpClient(MockEngine) instead of OkHttp. To test that code throws, call it,
 then fail(), and catch the exception. fail() throws an AssertionError (an Error,
 not an Exception), so catch (e: Exception) doesn't hide it, but
 catch (e: Throwable) would.
+
+
+## Day 35 (Nov 21): Android screen tests (Week 7 done)
+
+Did: 4 Compose screen tests in src/androidTest with createComposeRule:
+checking Read updates the checkbox and "1 of 4 done today", long-press deletes
+Gym, tapping Gym asks to open id 2 (the test plays the navigation), the detail
+screen for id 2 shows Gym and its status. Week 7 goal reached on both platforms.
+
+Problem: createComposeRule couldn't be imported. The screen test crashed with
+NoSuchMethodException: InputManager.getInstance. assertIsOn failed on the
+row. A "tap opens the detail screen" test was red every time.
+
+Fix: Moved the test file from src/test to src/androidTest. Updated Espresso
+to 3.7.0 and androidx.test.ext:junit to 1.3.0. Moved the test tag from the row
+to the Checkbox. Split the navigation test into "the list asks for id 2" and
+"the detail screen shows Gym"; the full-app test needs Hilt's test setup
+(parked for later).
+
+Learned: Each test folder only sees the libraries added for it. A
+NoSuchMethodException on a hidden Android method means a library is too old
+for this Android. A failed Compose check prints the node it found, so I can
+read what I really found. A test that can never pass must be deleted, not
+ignored.
