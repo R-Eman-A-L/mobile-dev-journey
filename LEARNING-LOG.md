@@ -450,7 +450,6 @@ Learned: A streak is calculated by starting at today (or yesterday if today isn'
 - Learned: check the starting point before the Act, so the test proves the action caused
   the change. 17 Flutter tests passing.
 
-
 ## Day 33 (Nov 19): Android unit tests
 
 Did: 10 JUnit tests for HabitListViewModel (add, blank, duplicate, trim (R),
@@ -489,7 +488,6 @@ then fail(), and catch the exception. fail() throws an AssertionError (an Error,
 not an Exception), so catch (e: Exception) doesn't hide it, but
 catch (e: Throwable) would.
 
-
 ## Day 35 (Nov 21): Android screen tests (Week 7 done)
 
 Did: 4 Compose screen tests in src/androidTest with createComposeRule:
@@ -512,3 +510,26 @@ NoSuchMethodException on a hidden Android method means a library is too old
 for this Android. A failed Compose check prints the node it found, so I can
 read what I really found. A test that can never pass must be deleted, not
 ignored.
+
+## Challenge 3 (Nov 21–26): Fuel Log, Android from scratch
+
+Did: Ticket → clarifying questions → full plan (Step 0 for each thing on the
+screen) → Fuel Log app: add, list, monthly total (month AND year), average per
+litre (total ÷ total), long-press delete, validation in order (truck, price,
+litres) with comma support. Money as whole cents in a Long. Hilt. 5 ViewModel
+unit tests, each seen red.
+
+Problem: ClassNotFoundException for com.example.streakbook.MainActivity: the
+project was created in a folder already holding TipSplit. Then "Hilt Activity
+must be attached to an @HiltAndroidApp Application". Git showed TipSplit and
+birthday_tracker as deleted after moving folders.
+
+Fix: Own namespace (com.example.fuellog) and own folder. Added FuelLogApp with
+@HiltAndroidApp + android:name in the manifest. Moved birthday_tracker back,
+renamed TipSplite → TipSplit, removed FuelLog files from TipSplit, committed the
+move with git add -A challenges after checking git status.
+
+Learned: Asking questions before building saves hours. Money is stored in
+cents, converted once in and once out. Test data must make the wrong version
+give a different answer. One project per folder, and commit folder moves right
+away. The last "Caused by:" (and Hilt's "Did you forget…?") usually says the fix.
